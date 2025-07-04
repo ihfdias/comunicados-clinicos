@@ -3,15 +3,18 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ComunicadoController;
+use App\Http\Controllers\UsuarioController;
 
 
 Route::get('/', [ComunicadoController::class, 'publico'])->name('publico');
 Route::get('/comunicado/{id}', [ComunicadoController::class, 'publicoShow'])->name('comunicados.publico_show');
+Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
+Route::patch('/usuarios/{id}/toggle-admin', [UsuarioController::class, 'toggleAdmin'])->name('usuarios.toggleAdmin');
 
 
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect()->route('comunicados.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
