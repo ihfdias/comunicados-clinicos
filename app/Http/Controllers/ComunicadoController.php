@@ -58,4 +58,10 @@ class ComunicadoController extends Controller
         $comunicado->delete();
         return redirect()->route('comunicados.index')->with('success', 'Comunicado excluído!');
     }
+
+    public function publicoShow($id)
+    {
+        $comunicado = Comunicado::findOrFail($id);
+        return view('comunicados.show', compact('comunicado'));
+    }
 }
