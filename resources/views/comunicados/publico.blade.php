@@ -1,30 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="container">
     <h1 class="mb-4">Comunicados ao Corpo Clínico</h1>
 
-    @forelse ($comunicados as $comunicado)
-        <div class="card mb-3 shadow-sm">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">{{ $comunicado->titulo }}</h5>
-            </div>
+    @foreach ($comunicados as $comunicado)
+        <div class="card mb-3 {{ $comunicado->urgente ? 'border-danger' : '' }}">
             <div class="card-body">
-                <p class="text-muted">
-                    Publicado em {{ $comunicado->created_at->format('d/m/Y H:i') }}
-                </p>
-
-                <p>
-                    {{ \Illuminate\Support\Str::limit(strip_tags($comunicado->conteudo), 200, '...') }}
-                </p>
-
-                <a href="{{ route('comunicados.publico_show', $comunicado->id) }}" class="btn btn-sm btn-outline-primary">
-                    Ler mais
+                <h5 class="card-title d-flex justify-content-between align-items-center">
+                    {{ $comunicado->titulo }}
+                    @if ($comunicado->urgente)
+                        <span class="badge bg-danger">URGENTE</span>
+                    @endif
+                </h5>
+                <p class="card-text">{!! \Illuminate\Support\Str::limit(strip_tags($comunicado->conteudo), 150, '...') !!}</p>
+                <a href="{{ route('comunicados.publico_show', $comunicado->id) }}" class="btn btn-outline-primary btn-sm">
+                    Ler Comunicado
                 </a>
             </div>
         </div>
-    @empty
-        <div class="alert alert-warning">
-            Nenhum comunicado disponível no momento.
-        </div>
-    @endforelse
+    @endforeach
+
+    @if ($comunicados->isEmpty())
+        <div class="alert alert-info">Nenhum comunicado publicado.</div>
+    @endif
+</div>
 @endsection

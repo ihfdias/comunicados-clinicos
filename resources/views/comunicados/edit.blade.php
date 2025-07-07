@@ -1,22 +1,43 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Editar Comunicado</h1>
+<div class="container">
+    <h2>Editar Comunicado</h2>
 
-    <form action="{{ route('comunicados.update', $comunicado) }}" method="POST">
-        @csrf @method('PUT')
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('comunicados.update', $comunicado->id) }}" method="POST">
+        @csrf
+        @method('PATCH')
 
         <div class="mb-3">
             <label for="titulo" class="form-label">Título</label>
-            <input type="text" name="titulo" id="titulo" class="form-control" value="{{ $comunicado->titulo }}" required>
+            <input type="text" name="titulo" id="titulo" class="form-control" value="{{ old('titulo', $comunicado->titulo) }}" required>
         </div>
 
         <div class="mb-3">
             <label for="conteudo" class="form-label">Conteúdo</label>
-            <textarea name="conteudo" id="conteudo" rows="5" class="form-control" required>{{ $comunicado->conteudo }}</textarea>
+            <input id="conteudo" type="hidden" name="conteudo" value="{{ old('conteudo', $comunicado->conteudo) }}">
+            <trix-editor input="conteudo"></trix-editor>
         </div>
 
-        <button class="btn btn-primary">Salvar</button>
+        <div class="form-check mb-3">
+            <input type="hidden" name="urgente" value="0"> {{-- Envia falso se desmarcado --}}
+            <input class="form-check-input" type="checkbox" name="urgente" id="urgente" value="1"
+                {{ old('urgente', $comunicado->urgente) ? 'checked' : '' }}>
+            <label class="form-check-label" for="urgente">Marcar como urgente</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Atualizar Comunicado</button>
         <a href="{{ route('comunicados.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>
+</div>
 @endsection

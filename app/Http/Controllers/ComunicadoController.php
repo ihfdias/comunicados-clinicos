@@ -7,12 +7,20 @@ use Illuminate\Http\Request;
 
 class ComunicadoController extends Controller
 {
+    // Exibição pública
     public function publico()
     {
         $comunicados = Comunicado::latest()->get();
         return view('comunicados.publico', compact('comunicados'));
     }
 
+    public function publicoShow($id)
+    {
+        $comunicado = Comunicado::findOrFail($id);
+        return view('comunicados.show', compact('comunicado'));
+    }
+
+    // Painel administrativo
     public function index()
     {
         $comunicados = Comunicado::latest()->paginate(10);
@@ -31,7 +39,11 @@ class ComunicadoController extends Controller
             'conteudo' => 'required|string',
         ]);
 
-        Comunicado::create($request->only('titulo', 'conteudo'));
+        Comunicado::create([
+            'titulo' => $request->titulo,
+            'conteudo' => $request->conteudo,
+            'urgente' => $request->has('urgente'),
+        ]);
 
         return redirect()->route('comunicados.index')->with('success', 'Comunicado criado com sucesso!');
     }
@@ -48,7 +60,11 @@ class ComunicadoController extends Controller
             'conteudo' => 'required|string',
         ]);
 
-        $comunicado->update($request->only('titulo', 'conteudo'));
+        $comunicado->update([
+            'titulo' => $request->titulo,
+            'conteudo' => $request->conteudo,
+            'urgente' => $request->has('urgente'),
+        ]);
 
         return redirect()->route('comunicados.index')->with('success', 'Comunicado atualizado com sucesso!');
     }
@@ -57,11 +73,5 @@ class ComunicadoController extends Controller
     {
         $comunicado->delete();
         return redirect()->route('comunicados.index')->with('success', 'Comunicado excluído!');
-    }
-
-    public function publicoShow($id)
-    {
-        $comunicado = Comunicado::findOrFail($id);
-        return view('comunicados.show', compact('comunicado'));
     }
 }

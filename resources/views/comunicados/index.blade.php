@@ -10,25 +10,20 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    @foreach($comunicados as $comunicado)
-        <div class="card mb-2">
-            <div class="card-body">
-                <h5 class="card-title">{{ $comunicado->titulo }}</h5>
-                <p class="card-text">{{ Str::limit($comunicado->conteudo, 150) }}</p>
-                <small class="text-muted">{{ $comunicado->created_at->format('d/m/Y H:i') }}</small>
-
-                <div class="mt-2">
-                    <a href="{{ route('comunicados.edit', $comunicado) }}" class="btn btn-sm btn-warning">Editar</a>
-                    <form action="{{ route('comunicados.destroy', $comunicado) }}" method="POST" class="d-inline" onsubmit="return confirm('Tem certeza?')">
-                        @csrf @method('DELETE')
-                        <button class="btn btn-sm btn-danger">Excluir</button>
-                    </form>
-                </div>
-            </div>
+    @foreach ($comunicados as $comunicado)
+    <div class="card mb-3 {{ $comunicado->urgente ? 'border-danger' : '' }}">
+        <div class="card-body">
+            <h5 class="card-title">
+                {{ $comunicado->titulo }}
+                @if ($comunicado->urgente)
+                    <span class="badge bg-danger">URGENTE</span>
+                @endif
+            </h5>
+            <p class="card-text">{!! Str::limit(strip_tags($comunicado->conteudo), 150) !!}</p>
+            <a href="{{ route('comunicados.show', $comunicado) }}" class="btn btn-outline-primary btn-sm">Ver</a>
+            <a href="{{ route('comunicados.edit', $comunicado) }}" class="btn btn-outline-secondary btn-sm">Editar</a>
         </div>
-    @endforeach
-
-    <div class="mt-3">
-        {{ $comunicados->links() }}
     </div>
+@endforeach
+
 @endsection
