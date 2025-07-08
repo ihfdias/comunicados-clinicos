@@ -20,10 +20,23 @@ class ComunicadoController extends Controller
         return view('comunicados.show', compact('comunicado'));
     }
 
-    // Painel administrativo
-    public function index()
+    public function index(Request $request)
     {
-        $comunicados = Comunicado::latest()->paginate(10);
+        $query = Comunicado::query();
+
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('titulo', 'like', '%' . $request->search . '%')
+                    ->orWhere('conteudo', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if ($request->filled('urgente')) {
+            $query->where('urgente', true);
+        }
+
+        $comunicados = $query->latest()->paginate(10);
+
         return view('comunicados.index', compact('comunicados'));
     }
 
@@ -72,7 +85,7 @@ class ComunicadoController extends Controller
     public function destroy(Comunicado $comunicado)
     {
         $comunicado->delete();
-        return redirect()->route('comunicados.index')->with('success', 'Comunicado excluído!');
+        return redirect()->route('comunicados.index')->with('success', 'Comunicado excluído com sucesso!');
     }
 
     public function show(Comunicado $comunicado)
