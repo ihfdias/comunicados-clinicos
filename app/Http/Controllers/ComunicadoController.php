@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 
 class ComunicadoController extends Controller
 {
-    // Exibição pública
+
     public function publico()
     {
-        $comunicados = Comunicado::latest()->get();
+        $comunicados = Comunicado::latest()->paginate(10); 
         return view('comunicados.publico', compact('comunicados'));
     }
 
@@ -33,6 +33,14 @@ class ComunicadoController extends Controller
 
         if ($request->filled('urgente')) {
             $query->where('urgente', true);
+        }
+
+        if ($request->filled('data_inicio')) {
+            $query->whereDate('created_at', '>=', $request->data_inicio);
+        }
+
+        if ($request->filled('data_fim')) {
+            $query->whereDate('created_at', '<=', $request->data_fim);
         }
 
         $comunicados = $query->latest()->paginate(10);
