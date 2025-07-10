@@ -4,22 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Models\Comunicado;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ComunicadoController extends Controller
 {
-
-    public function publico()
+    public function publico(Request $request)
     {
-        $comunicados = Comunicado::latest()->paginate(10); 
+        $query = Comunicado::query();
+
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('titulo', 'like', '%' . $request->search . '%')
+                    ->orWhere('conteudo', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $comunicados = $query->latest()->paginate(10);
+
         return view('comunicados.publico', compact('comunicados'));
     }
 
     public function publicoShow($id)
     {
         $comunicado = Comunicado::findOrFail($id);
-        return view('comunicados.show', compact('comunicado'));
-    }
+        $usuario_id = Auth::check() ? Auth::id() : null;
 
+        return view('comunicados.show', compact('comunicado', 'usuario_id'));
+    }
     public function index(Request $request)
     {
         $query = Comunicado::query();

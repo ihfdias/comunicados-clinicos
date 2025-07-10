@@ -5,8 +5,14 @@
     <h1 class="mb-4 text-center">Comunicados ao Corpo Clínico</h1>
 
     @if ($comunicados->isEmpty())
-        <div class="alert alert-info text-center">Nenhum comunicado publicado.</div>
+    <div class="alert alert-info text-center">Nenhum comunicado publicado.</div>
     @endif
+
+    <form method="GET" action="{{ route('publico') }}" class="mb-4 d-flex gap-2">
+        <input type="text" name="busca" class="form-control" placeholder="Buscar comunicados..." value="{{ request('busca') }}">
+        <button type="submit" class="btn btn-azul">Buscar</button>
+    </form>
+
 
     @foreach ($comunicados as $comunicado)
     <div class="card shadow-sm mb-4 {{ $comunicado->urgente ? 'border-danger' : '' }}">
@@ -14,7 +20,7 @@
             <h5 class="card-title d-flex justify-content-between align-items-center">
                 {{ $comunicado->titulo }}
                 @if ($comunicado->urgente)
-                    <span class="badge bg-danger">URGENTE</span>
+                <span class="badge bg-danger">URGENTE</span>
                 @endif
             </h5>
 
@@ -32,16 +38,16 @@
     @endforeach
 
     @if ($comunicados->hasPages())
-        <div class="mt-4">
-    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row">
-        <div class="mb-2 mb-md-0 text-muted">
-            Mostrando {{ $comunicados->firstItem() }} até {{ $comunicados->lastItem() }} de {{ $comunicados->total() }} comunicados
-        </div>
-        <div>
-            {{ $comunicados->links() }}
+    <div class="mt-4">
+        <div class="d-flex justify-content-between align-items-center flex-column flex-md-row">
+            <div class="mb-2 mb-md-0 text-muted">
+                Mostrando {{ $comunicados->firstItem() }} até {{ $comunicados->lastItem() }} de {{ $comunicados->total() }} comunicados
+            </div>
+            <div>
+                {{ $comunicados->links() }}
+            </div>
         </div>
     </div>
-</div>
 
     @endif
 </div>
