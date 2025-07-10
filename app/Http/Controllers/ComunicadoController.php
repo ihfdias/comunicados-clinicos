@@ -95,7 +95,7 @@ class ComunicadoController extends Controller
         $comunicado->update([
             'titulo' => $request->titulo,
             'conteudo' => $request->conteudo,
-            'urgente' => $request->has('urgente'),
+            'urgente' => $request->urgente, // ← Agora vai receber 0 ou 1 corretamente
         ]);
 
         return redirect()->route('comunicados.index')->with('success', 'Comunicado atualizado com sucesso!');

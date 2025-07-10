@@ -31,7 +31,7 @@
 
         <div class="form-check mb-4">
             <input type="hidden" name="urgente" value="0">
-            <input class="form-check-input" type="checkbox" name="urgente" id="urgente" value="1" {{ old('urgente', $comunicado->urgente) ? 'checked' : '' }}>
+            <input type="checkbox" name="urgente" id="urgente" class="form-check-input" value="1" {{ $comunicado->urgente ? 'checked' : '' }}>
             <label class="form-check-label" for="urgente">Marcar como urgente</label>
         </div>
 
