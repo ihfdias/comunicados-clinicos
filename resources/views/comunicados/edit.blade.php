@@ -2,16 +2,16 @@
 
 @section('content')
 <div class="container">
-    <h2>Editar Comunicado</h2>
+    <h2 class="mb-4">Editar Comunicado</h2>
 
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
     @endif
 
     <form action="{{ route('comunicados.update', $comunicado->id) }}" method="POST">
@@ -29,15 +29,16 @@
             <trix-editor input="conteudo"></trix-editor>
         </div>
 
-        <div class="form-check mb-3">
-            <input type="hidden" name="urgente" value="0"> {{-- Envia falso se desmarcado --}}
-            <input class="form-check-input" type="checkbox" name="urgente" id="urgente" value="1"
-                {{ old('urgente', $comunicado->urgente) ? 'checked' : '' }}>
+        <div class="form-check mb-4">
+            <input type="hidden" name="urgente" value="0">
+            <input class="form-check-input" type="checkbox" name="urgente" id="urgente" value="1" {{ old('urgente', $comunicado->urgente) ? 'checked' : '' }}>
             <label class="form-check-label" for="urgente">Marcar como urgente</label>
         </div>
 
-        <button type="submit" class="btn btn-primary">Atualizar Comunicado</button>
-        <a href="{{ route('comunicados.index') }}" class="btn btn-secondary">Cancelar</a>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-azul">Atualizar Comunicado</button>
+            <a href="{{ route('comunicados.index') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
 </div>
 @endsection
