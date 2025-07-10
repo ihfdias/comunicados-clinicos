@@ -83,8 +83,7 @@
                         </form>
                     </li>
                     @else
-                    <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Entrar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Registrar</a></li>
+                    
                     @endauth
                 </ul>
             </div>
