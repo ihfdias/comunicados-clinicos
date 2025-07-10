@@ -15,14 +15,20 @@ WORKDIR /app
 COPY . .
 
 # Instala dependências PHP do projeto
-RUN composer install --no-dev --optimize-autoloader
+RUN echo "🔧 Instalando dependências PHP..." && \
+    composer install --no-dev --optimize-autoloader
 
-# Copia o .env de produção e prepara o banco
-RUN cp .env.production .env && \
+# Prepara ambiente e banco
+RUN echo "⚙️  Preparando ambiente e banco..." && \
+    cp .env.production .env && \
+    echo "✅ Copiado .env.production para .env" && \
     mkdir -p database && \
     touch database/database.sqlite && \
+    echo "✅ Banco SQLite criado" && \
     php artisan key:generate && \
-    php artisan migrate --force
+    echo "✅ Chave gerada" && \
+    php artisan migrate --force && \
+    echo "✅ Migrations executadas"
 
 # Expondo porta
 EXPOSE 8000
