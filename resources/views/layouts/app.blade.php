@@ -83,6 +83,7 @@
                         </form>
                     </li>
                     @else
+                    <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Logar como Admin</a></li>
                     
                     @endauth
                 </ul>
