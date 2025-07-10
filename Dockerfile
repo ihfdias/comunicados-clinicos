@@ -22,7 +22,7 @@ RUN cp .env.production .env && \
     mkdir -p database && \
     touch database/database.sqlite && \
     php artisan key:generate && \
-    php artisan migrate --force
+    echo "✅ Env e key gerados. Pulando migrations por ora."
 
 # Expondo porta
 EXPOSE 8000
