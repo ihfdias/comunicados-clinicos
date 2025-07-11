@@ -122,7 +122,7 @@ class ComunicadoController extends Controller
         ->latest()
         ->get(['id', 'titulo', 'conteudo', 'created_at', 'urgente']); 
 
-    return response()->json($comunicados);
+    return view('comunicados._lista', compact('comunicados'))->render();
 }
 
 
