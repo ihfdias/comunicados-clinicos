@@ -2,50 +2,70 @@
 
 @section('content')
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Comunicados</h1>
-        <a href="{{ route('comunicados.create') }}" class="btn btn-primary">Novo Comunicado</a>
-    </div>
-
-    @if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    <!-- ...seu conteúdo HTML aqui... -->
 
     <form method="GET" action="{{ route('comunicados.index') }}" class="mb-4 d-flex gap-2">
-        <input type="text" name="busca" class="form-control" placeholder="Buscar comunicados..." value="{{ request('busca') }}">
+        <input type="text" id="busca" name="busca" class="form-control" placeholder="Buscar comunicados..." value="{{ request('busca') }}">
         <button type="submit" class="btn btn-azul">Buscar</button>
     </form>
 
-
-    @foreach ($comunicados as $comunicado)
-    <div class="card mb-3 {{ $comunicado->urgente ? 'border-danger' : '' }}">
-        <div class="card-body">
-            <h5 class="card-title">
-                {{ $comunicado->titulo }}
-                @if ($comunicado->urgente)
-                <span class="badge bg-danger">URGENTE</span>
-                @endif
-            </h5>
-            <p class="card-text text-muted small">
-                Publicado em {{ $comunicado->created_at->format('d/m/Y H:i') }}
-            </p>
-            <p class="card-text">{!! Str::limit(strip_tags($comunicado->conteudo), 150) !!}</p>
-
-            <a href="{{ route('comunicados.show', $comunicado) }}" class="btn btn-outline-primary btn-sm">Ver</a>
-            <a href="{{ route('comunicados.edit', $comunicado) }}" class="btn btn-outline-secondary btn-sm">Editar</a>
-
-            <form action="{{ route('comunicados.destroy', $comunicado) }}" method="POST" class="d-inline" onsubmit="return confirm('Tem certeza que deseja excluir?')">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-outline-danger btn-sm">Excluir</button>
-            </form>
-        </div>
+    <div id="lista-comunicados">
+        @foreach ($comunicados as $comunicado)
+            @include('comunicados._item', ['comunicado' => $comunicado])
+        @endforeach
     </div>
-    @endforeach
 
-    {{-- Paginação --}}
     <div class="d-flex justify-content-center mt-4">
         {{ $comunicados->links() }}
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const inputBusca = document.getElementById('busca');
+    const lista = document.getElementById('lista-comunicados');
+
+    if (inputBusca) {
+        inputBusca.addEventListener('input', function () {
+            const termo = this.value;
+
+            fetch(`{{ route('comunicados.busca') }}?q=${encodeURIComponent(termo)}`)
+                .then(response => response.json())
+                .then(data => {
+                    lista.innerHTML = '';
+
+                    if (data.length === 0) {
+                        lista.innerHTML = '<p>Nenhum comunicado encontrado.</p>';
+                        return;
+                    }
+
+                    data.forEach(comunicado => {
+                        const urgenteBadge = comunicado.urgente
+                            ? '<span class="badge bg-danger">URGENTE</span>'
+                            : '';
+
+                        lista.innerHTML += `
+                            <div class="card mb-3 ${comunicado.urgente ? 'border-danger' : ''}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${comunicado.titulo} ${urgenteBadge}</h5>
+                                    <p class="card-text text-muted small">
+                                        Publicado em ${new Date(comunicado.created_at).toLocaleString()}
+                                    </p>
+                                    <p class="card-text">${comunicado.conteudo.substring(0, 150)}...</p>
+                                    <a href="/comunicados/${comunicado.id}" class="btn btn-outline-primary btn-sm">Ver</a>
+                                    <a href="/comunicados/${comunicado.id}/edit" class="btn btn-outline-secondary btn-sm">Editar</a>
+                                    <form action="/comunicados/${comunicado.id}" method="POST" class="d-inline" onsubmit="return confirm('Tem certeza?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Excluir</button>
+                                    </form>
+                                </div>
+                            </div>
+                        `;
+                    });
+                });
+        });
+    }
+});
+</script>
 @endsection

@@ -112,4 +112,18 @@ class ComunicadoController extends Controller
     {
         return view('comunicados.show', compact('comunicado'));
     }
+
+    public function busca(Request $request)
+{
+    $termo = $request->q;
+
+    $comunicados = Comunicado::query()
+        ->where('titulo', 'like', "%{$termo}%")
+        ->orWhere('conteudo', 'like', "%{$termo}%")
+        ->orderByDesc('created_at')
+        ->get();
+
+    return response()->json($comunicados);
+}
+
 }

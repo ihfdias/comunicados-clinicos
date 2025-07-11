@@ -7,6 +7,7 @@ use App\Http\Controllers\UsuarioController;
 
 Route::get('/', [ComunicadoController::class, 'publico'])->name('publico');
 Route::get('/comunicado/{id}', [ComunicadoController::class, 'publicoShow'])->name('comunicados.publico_show');
+Route::get('/comunicados/busca', [ComunicadoController::class, 'busca'])->name('comunicados.busca');
 
 Route::patch('/usuarios/{id}/toggle-admin', [UsuarioController::class, 'toggleAdmin'])
     ->middleware(['auth', 'admin'])
