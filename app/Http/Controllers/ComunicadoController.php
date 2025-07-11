@@ -120,9 +120,10 @@ class ComunicadoController extends Controller
     $comunicados = Comunicado::where('titulo', 'like', "%{$termo}%")
         ->orWhere('conteudo', 'like', "%{$termo}%")
         ->latest()
-        ->get();
-    
-    return view('comunicados._lista', compact('comunicados'));
+        ->get(['id', 'titulo', 'conteudo', 'created_at', 'urgente']); 
+
+    return response()->json($comunicados);
 }
+
 
 }
