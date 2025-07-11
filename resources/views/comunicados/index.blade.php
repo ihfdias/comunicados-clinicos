@@ -16,9 +16,7 @@
     </form>
 
     <div id="lista-comunicados">
-        @foreach ($comunicados as $comunicado)
-            @include('comunicados._item', ['comunicado' => $comunicado])
-        @endforeach
+        @include('comunicados._lista', ['comunicados' => $comunicados])
     </div>
 
     <div class="d-flex justify-content-center mt-4">
@@ -27,14 +25,14 @@
 </div>
 
 <script>
-document.getElementById('busca').addEventListener('input', function () {
-    const termo = this.value;
+    document.getElementById('busca').addEventListener('input', function() {
+        const termo = this.value;
 
-    fetch(`/comunicados/busca?q=${encodeURIComponent(termo)}`)
-    .then(response => response.text()) // <- mudança aqui
-    .then(html => {
-        document.getElementById('lista-comunicados').innerHTML = html;
-        });
-});
+        fetch(`/comunicados/busca?q=${encodeURIComponent(termo)}`)
+            .then(response => response.text()) // ← Espera HTML
+            .then(html => {
+                document.getElementById('lista-comunicados').innerHTML = html;
+            });
+    });
 </script>
 @endsection

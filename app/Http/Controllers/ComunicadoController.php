@@ -121,8 +121,8 @@ class ComunicadoController extends Controller
         ->orWhere('conteudo', 'like', "%{$termo}%")
         ->latest()
         ->get();
-
-    return view('comunicados._lista', compact('comunicados'))->render();
+    
+    return view('comunicados._lista', compact('comunicados'));
 }
 
 }
