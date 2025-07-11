@@ -74,11 +74,12 @@ class ComunicadoController extends Controller
         Comunicado::create([
             'titulo' => $request->titulo,
             'conteudo' => $request->conteudo,
-            'urgente' => $request->has('urgente'),
+            'urgente' => $request->urgente, // Corrigido aqui
         ]);
 
         return redirect()->route('comunicados.index')->with('success', 'Comunicado criado com sucesso!');
     }
+
 
     public function edit(Comunicado $comunicado)
     {
@@ -95,7 +96,7 @@ class ComunicadoController extends Controller
         $comunicado->update([
             'titulo' => $request->titulo,
             'conteudo' => $request->conteudo,
-            'urgente' => $request->urgente, // ← Agora vai receber 0 ou 1 corretamente
+            'urgente' => $request->urgente,
         ]);
 
         return redirect()->route('comunicados.index')->with('success', 'Comunicado atualizado com sucesso!');
