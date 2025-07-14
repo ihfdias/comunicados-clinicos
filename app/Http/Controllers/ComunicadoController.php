@@ -69,17 +69,24 @@ class ComunicadoController extends Controller
         $request->validate([
             'titulo' => 'required|string|max:255',
             'conteudo' => 'required|string',
+            'anexo' => 'nullable|file|max:2048',
         ]);
+
+        $caminho = null;
+
+        if ($request->hasFile('anexo')) {
+            $caminho = $request->file('anexo')->store('anexos', 'public');
+        }
 
         Comunicado::create([
             'titulo' => $request->titulo,
             'conteudo' => $request->conteudo,
-            'urgente' => $request->urgente, // Corrigido aqui
+            'urgente' => $request->has('urgente'),
+            'anexo' => $caminho,
         ]);
 
         return redirect()->route('comunicados.index')->with('success', 'Comunicado criado com sucesso!');
     }
-
 
     public function edit(Comunicado $comunicado)
     {
@@ -113,17 +120,15 @@ class ComunicadoController extends Controller
         return view('comunicados.show', compact('comunicado'));
     }
 
-   public function busca(Request $request)
-{
-    $termo = $request->q;
+    public function busca(Request $request)
+    {
+        $termo = $request->q;
 
-    $comunicados = Comunicado::where('titulo', 'like', "%{$termo}%")
-        ->orWhere('conteudo', 'like', "%{$termo}%")
-        ->latest()
-        ->get(['id', 'titulo', 'conteudo', 'created_at', 'urgente']); 
+        $comunicados = Comunicado::where('titulo', 'like', "%{$termo}%")
+            ->orWhere('conteudo', 'like', "%{$termo}%")
+            ->latest()
+            ->get(['id', 'titulo', 'conteudo', 'created_at', 'urgente']);
 
-    return view('comunicados._lista', compact('comunicados'))->render();
-}
-
-
+        return view('comunicados._lista', compact('comunicados'))->render();
+    }
 }

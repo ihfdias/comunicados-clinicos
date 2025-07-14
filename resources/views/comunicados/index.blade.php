@@ -24,7 +24,9 @@
     <div id="paginacao" class="d-flex justify-content-center mt-4">
         {{ $comunicados->links() }}
     </div>
+    
 </div>
+
 
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">

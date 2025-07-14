@@ -9,7 +9,7 @@ class Comunicado extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['titulo', 'conteudo', 'urgente'];
+    protected $fillable = ['titulo', 'conteudo', 'urgente', 'anexo'];
 
     protected $casts = [
         'urgente' => 'boolean',

@@ -7,14 +7,23 @@
             <span class="badge bg-danger">URGENTE</span>
             @endif
         </h5>
+
         <p class="text-muted small">
             Publicado em {{ $comunicado->created_at->format('d/m/Y H:i') }}
         </p>
+
         <p>{!! Str::limit(strip_tags($comunicado->conteudo), 150) !!}</p>
 
-        <div class="d-flex gap-2">
+        <div class="d-flex gap-2 mt-2">
             <a href="{{ route('comunicados.show', $comunicado) }}" class="btn btn-outline-primary btn-sm">Ver</a>
             <a href="{{ route('comunicados.edit', $comunicado) }}" class="btn btn-outline-secondary btn-sm">Editar</a>
+
+            @if ($comunicado->anexo)
+            <a href="{{ asset('storage/' . $comunicado->anexo) }}" target="_blank" class="btn btn-outline-success btn-sm">
+                <i class="bi bi-paperclip"></i> Ver Anexo
+            </a>
+            @endif
+
             <form action="{{ route('comunicados.destroy', $comunicado) }}" method="POST" class="d-inline" onsubmit="return confirm('Excluir?')">
                 @csrf
                 @method('DELETE')

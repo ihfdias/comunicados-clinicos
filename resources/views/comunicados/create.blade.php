@@ -14,30 +14,36 @@
     </div>
     @endif
 
-    <form action="{{ route('comunicados.store') }}" method="POST">
-        @csrf
+        <form action="{{ route('comunicados.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
 
-        <div class="mb-3">
-            <label for="titulo" class="form-label">Título</label>
-            <input type="text" name="titulo" id="titulo" class="form-control" value="{{ old('titulo') }}" required>
-        </div>
+            <!-- Título -->
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Título</label>
+                <input type="text" name="titulo" class="form-control" required>
+            </div>
 
-        <div class="mb-3">
-            <label for="conteudo" class="form-label">Conteúdo</label>
-            <input id="conteudo" type="hidden" name="conteudo" value="{{ old('conteudo') }}">
-            <trix-editor input="conteudo"></trix-editor>
-        </div>
+            <!-- Conteúdo -->
+            <div class="mb-3">
+                <label for="conteudo" class="form-label">Conteúdo</label>
+                <textarea name="conteudo" class="form-control" rows="5" required></textarea>
+            </div>
 
-        <div class="form-check mb-4">
-            <input type="hidden" name="urgente" value="0">
-            <input class="form-check-input" type="checkbox" name="urgente" id="urgente" value="1" {{ old('urgente') ? 'checked' : '' }}>
-            <label class="form-check-label" for="urgente">Marcar como urgente</label>
-        </div>
+            <!-- Urgente -->
+            <div class="form-check mb-3">
+                <input type="checkbox" name="urgente" id="urgente" class="form-check-input">
+                <label class="form-check-label" for="urgente">Marcar como urgente</label>
+            </div>
 
-        <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-azul">Salvar Comunicado</button>
-            <a href="{{ route('comunicados.index') }}" class="btn btn-secondary">Cancelar</a>
-        </div>
-    </form>
+            <!-- Anexo -->
+            <div class="mb-3">
+                <label for="anexo" class="form-label">Anexo</label>
+                <input type="file" name="anexo" class="form-control">
+            </div>
+
+            <!-- Botão -->
+            <button type="submit" class="btn btn-primary">Salvar Comunicado</button>
+        </form>
+
 </div>
 @endsection

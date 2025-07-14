@@ -7,7 +7,7 @@
         <h2 class="card-title mb-3">
             {{ $comunicado->titulo }}
             @if ($comunicado->urgente)
-                <span class="badge bg-danger">URGENTE</span>
+            <span class="badge bg-danger">URGENTE</span>
             @endif
         </h2>
 
@@ -21,21 +21,29 @@
             {!! $comunicado->conteudo !!}
         </div>
 
+        @if ($comunicado->anexo)
+        <div class="mt-4">
+            <a href="{{ asset('storage/' . $comunicado->anexo) }}" target="_blank" class="btn btn-outline-success">
+                <i class="bi bi-paperclip"></i> Ver Anexo
+            </a>
+        </div>
+        @endif
+
         <div class="mt-4 d-flex justify-content-between">
             <a href="{{ url()->previous() }}" class="btn btn-secondary">Voltar</a>
 
             @auth
-                @if(auth()->user()->is_admin)
-                    <div class="d-flex gap-2">
-                        <a href="{{ route('comunicados.edit', $comunicado) }}" class="btn btn-outline-primary">Editar</a>
+            @if(auth()->user()->is_admin)
+            <div class="d-flex gap-2">
+                <a href="{{ route('comunicados.edit', $comunicado) }}" class="btn btn-outline-primary">Editar</a>
 
-                        <form action="{{ route('comunicados.destroy', $comunicado) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este comunicado?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-outline-danger">Excluir</button>
-                        </form>
-                    </div>
-                @endif
+                <form action="{{ route('comunicados.destroy', $comunicado) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este comunicado?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-outline-danger">Excluir</button>
+                </form>
+            </div>
+            @endif
             @endauth
         </div>
     </div>
