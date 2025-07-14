@@ -55,39 +55,13 @@
             const termo = this.value;
 
             fetch(`/comunicados/busca?q=${encodeURIComponent(termo)}`)
-                .then(response => response.json())
-                .then(data => {
+                .then(response => response.text()) // ← Espera HTML agora
+                .then(html => {
                     const container = document.getElementById('lista-comunicados');
-                    container.innerHTML = '';
-
-                    if (data.length === 0) {
-                        container.innerHTML = '<div class="alert alert-info text-center">Nenhum comunicado encontrado.</div>';
-                        return;
-                    }
-
-                    data.forEach(comunicado => {
-                        const urgenteBadge = comunicado.urgente
-                            ? '<span class="badge bg-danger"><i class="bi bi-exclamation-triangle-fill"></i> URGENTE</span>'
-                            : '';
-
-                        container.innerHTML += `
-                            <div class="card shadow-sm mb-4 ${comunicado.urgente ? 'border-danger' : 'border-0'}">
-                                <div class="card-body">
-                                    <h5 class="card-title d-flex justify-content-between align-items-center">
-                                        ${comunicado.titulo}
-                                        ${urgenteBadge}
-                                    </h5>
-                                    <p class="text-muted small mb-2">
-                                        Publicado em ${new Date(comunicado.created_at).toLocaleString('pt-BR')}
-                                    </p>
-                                    <p class="card-text">${comunicado.conteudo.substring(0, 150)}...</p>
-                                    <a href="/comunicado/${comunicado.id}" class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-eye-fill"></i> Ler mais
-                                    </a>
-                                </div>
-                            </div>
-                        `;
-                    });
+                    container.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar comunicados:', error);
                 });
         });
     });
