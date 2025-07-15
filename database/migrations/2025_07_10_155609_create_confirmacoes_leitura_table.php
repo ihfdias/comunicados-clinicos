@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('confirmacoes_leitura', function (Blueprint $table) {
+        Schema::create('confirmacao_leitura', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('comunicado_id')->constrained()->onDelete('cascade');

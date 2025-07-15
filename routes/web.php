@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ComunicadoController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\PainelController;
 
 Route::get('/', [ComunicadoController::class, 'publico'])->name('publico');
 Route::get('/comunicado/{id}', [ComunicadoController::class, 'publicoShow'])->name('comunicados.publico_show');
@@ -26,6 +27,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('comunicados', ComunicadoController::class)->except('publico');
     Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
+    Route::get('/painel', [PainelController::class, 'index'])->name('painel.index');
 });
 
 require __DIR__.'/auth.php';

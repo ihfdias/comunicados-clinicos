@@ -76,6 +76,13 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('comunicados.index') }}">Comunicados</a>
                     </li>
+                    @auth
+                    @if(auth()->user()->is_admin)
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('painel.index') }}">Painel</a>
+                    </li>
+                    @endif
+                    @endauth
                     <li class="nav-item">
                         <form method="POST" action="{{ route('logout') }}" class="d-inline">
                             @csrf
@@ -84,8 +91,9 @@
                     </li>
                     @else
                     <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Logar como Admin</a></li>
-                    
+
                     @endauth
+
                 </ul>
             </div>
         </div>
@@ -99,7 +107,7 @@
         &copy; {{ date('Y') }} Hospital PUC-Campinas - Sistema de Comunicados
     </footer>
 
-    <!-- Scripts no final da página -->
+
     <script src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/2.0.0/trix.min.js"></script>
 </body>
