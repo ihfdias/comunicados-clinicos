@@ -20,7 +20,7 @@ class PainelController extends Controller
         'totalComunicados',
         'totalUrgentes',
         'totalLeituras',
-        'usuariosQueleram',
+        'usuariosQueLeram',
         'ultimoComunicado',
 
     ));
