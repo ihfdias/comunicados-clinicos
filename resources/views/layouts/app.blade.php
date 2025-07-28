@@ -54,7 +54,7 @@
             border-radius: .375rem;
         }
 
-        /* Evita que Trix esconda os botões em alguns casos */
+        
         trix-toolbar {
             background-color: #f8f9fa;
         }
@@ -64,9 +64,7 @@
 <body class="bg-light">
     <nav class="navbar navbar-expand-lg mb-4">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/') }}">
-                <img src="{{ asset('images/novalogo.png') }}" alt="Hospital" style="height: 50px;">
-            </a>
+            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -104,7 +102,7 @@
     </main>
 
     <footer>
-        &copy; {{ date('Y') }} Hospital PUC-Campinas - Sistema de Comunicados
+        &copy; {{ date('Y') }} Igor Dias - Sistema de Comunicados
     </footer>
 
 
