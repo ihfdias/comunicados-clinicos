@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ComunicadoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\PainelController;
+use App\Models\User;
 
 Route::get('/', [ComunicadoController::class, 'publico'])->name('publico');
 Route::get('/comunicado/{id}', [ComunicadoController::class, 'publicoShow'])->name('comunicados.publico_show');
@@ -30,4 +31,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/painel', [PainelController::class, 'index'])->name('painel.index');
 });
 
+Route::get('/teste-mongo', function () {
+    $user = User::create([
+        'name' => 'Teste MongoDB',
+        'email' => 'teste' . rand(1000, 9999) . '@exemplo.com',
+        'password' => bcrypt('12345678'),
+    ]);
+    return response()->json($user);
+});
+
 require __DIR__.'/auth.php';
+
