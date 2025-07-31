@@ -31,13 +31,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/painel', [PainelController::class, 'index'])->name('painel.index');
 });
 
-Route::get('/teste-mongo', function () {
-    $user = User::create([
-        'name' => 'Teste MongoDB',
-        'email' => 'teste' . rand(1000, 9999) . '@exemplo.com',
+Route::get('/mongo-teste', function () {
+    return User::create([
+        'name' => 'Teste Mongo',
+        'email' => 'teste@mongo.com',
         'password' => bcrypt('12345678'),
     ]);
-    return response()->json($user);
 });
 
 require __DIR__.'/auth.php';
