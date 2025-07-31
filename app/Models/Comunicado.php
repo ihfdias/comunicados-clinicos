@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class Comunicado extends Model
+class Comunicado extends Eloquent
 {
     use HasFactory;
 
