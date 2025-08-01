@@ -35,5 +35,6 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 # Expor porta 80 (Apache padrão)
 EXPOSE 80
 
-# Comando para rodar o Apache em foreground
-CMD ["apache2-foreground"]
+# Apontar o Apache para a pasta public/
+RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+
