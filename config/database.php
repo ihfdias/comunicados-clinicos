@@ -101,14 +101,20 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
         
-     'mongodb' => [
-    'driver' => 'mongodb',
-    'dsn' => env('DB_DSN'),
-    'database' => env('DB_DATABASE'),
-    'options' => [
-        'authSource' => env('DB_AUTHENTICATION_DATABASE', 'admin'),
+       'mongodb' => [
+        'driver'   => 'mongodb',
+        'dsn'      => env('DB_DSN'),
+        'database' => env('DB_DATABASE'),
+        'options'  => [
+            'authSource' => 'admin',
+        ],
     ],
-],
+
+    'sqlite' => [
+        'driver' => 'sqlite',
+        'database' => env('SQL_DB_DATABASE', database_path('database.sqlite')),
+        'prefix' => '',
+    ],
     ],
 
     /*
