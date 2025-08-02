@@ -102,14 +102,10 @@ return [
         ],
         
      'mongodb' => [
-    'driver'   => 'mongodb',
-    'dsn'      => env('DB_DSN'),
-    'host'     => env('DB_HOST', '127.0.0.1'),
-    'port'     => env('DB_PORT', 27017),
-    'database' => env('DB_DATABASE', 'Users'),
-    'username' => env('DB_USERNAME'),
-    'password' => env('DB_PASSWORD'),
-    'options'  => [
+    'driver' => 'mongodb',
+    'dsn' => env('DB_DSN'),
+    'database' => env('DB_DATABASE'),
+    'options' => [
         'authSource' => env('DB_AUTHENTICATION_DATABASE', 'admin'),
     ],
 ],
