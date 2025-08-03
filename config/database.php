@@ -101,19 +101,18 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
         
-       'mongodb' => [
-        'driver'   => 'mongodb',
-        'dsn'      => env('DB_DSN'),
-        'database' => env('DB_DATABASE'),
-        'options'  => [
-            'authSource' => 'admin',
-        ],
+       'sqlite' => [
+        'driver' => 'sqlite',
+        'url' => env('DATABASE_URL'),
+        'database' => env('SQLITE_DB_PATH', database_path('database.sqlite')),
+        'prefix' => '',
+        'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
     ],
 
-    'sqlite' => [
-        'driver' => 'sqlite',
-        'database' => env('SQL_DB_DATABASE', database_path('database.sqlite')),
-        'prefix' => '',
+    'mongodb' => [
+        'driver' => 'mongodb',
+        'dsn' => env('DB_DSN'),
+        'database' => env('DB_DATABASE'),
     ],
     ],
 
