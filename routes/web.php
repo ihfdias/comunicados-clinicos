@@ -31,11 +31,18 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/painel', [PainelController::class, 'index'])->name('painel.index');
 });
 
-Route::get('/mongo-teste', function () {
-    return User::create([
-        'name' => 'Teste Mongo',
-        'email' => 'teste@mongo.com',
-        'password' => bcrypt('12345678'),
+Route::get('/mongo-teste-relacao', function () {
+    $user = App\Models\User::first();
+    $comunicado = App\Models\Comunicado::create([
+        'titulo' => 'Teste Relacionamento',
+        'conteudo' => 'Conteúdo...',
+        'urgente' => false
+    ]);
+
+    return App\Models\ConfirmacaoLeitura::create([
+        'user_id' => $user->_id,
+        'comunicado_id' => $comunicado->_id,
+        'lido_em' => now(),
     ]);
 });
 
