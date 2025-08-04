@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comunicado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use MongoDB\BSON\ObjectId;
 
 class ComunicadoController extends Controller
 {
@@ -25,12 +26,17 @@ class ComunicadoController extends Controller
     }
 
     public function publicoShow($id)
-    {
-        $comunicado = Comunicado::findOrFail($id);
-        $usuario_id = Auth::check() ? Auth::id() : null;
-
-        return view('comunicados.show', compact('comunicado', 'usuario_id'));
+{
+    try {
+        $comunicado = Comunicado::findOrFail(new ObjectId($id));
+    } catch (\Exception $e) {
+        abort(404);
     }
+
+    $usuario_id = Auth::check() ? Auth::id() : null;
+
+    return view('comunicados.show', compact('comunicado', 'usuario_id'));
+}
     public function index(Request $request)
     {
         $query = Comunicado::query();
@@ -88,37 +94,42 @@ class ComunicadoController extends Controller
         return redirect()->route('comunicados.index')->with('success', 'Comunicado criado com sucesso!');
     }
 
-    public function edit(Comunicado $comunicado)
-    {
-        return view('comunicados.edit', compact('comunicado'));
-    }
+    public function edit($id)
+{
+    $comunicado = Comunicado::findOrFail(new ObjectId($id));
+    return view('comunicados.edit', compact('comunicado'));
+}
+    public function update(Request $request, $id)
+{
+    $comunicado = Comunicado::findOrFail(new ObjectId($id));
 
-    public function update(Request $request, Comunicado $comunicado)
-    {
-        $request->validate([
-            'titulo' => 'required|string|max:255',
-            'conteudo' => 'required|string',
-        ]);
+    $request->validate([
+        'titulo' => 'required|string|max:255',
+        'conteudo' => 'required|string',
+    ]);
 
-        $comunicado->update([
-            'titulo' => $request->titulo,
-            'conteudo' => $request->conteudo,
-            'urgente' => $request->urgente,
-        ]);
+    $comunicado->update([
+        'titulo' => $request->titulo,
+        'conteudo' => $request->conteudo,
+        'urgente' => $request->urgente,
+    ]);
 
-        return redirect()->route('comunicados.index')->with('success', 'Comunicado atualizado com sucesso!');
-    }
+    return redirect()->route('comunicados.index')->with('success', 'Comunicado atualizado com sucesso!');
+}
 
-    public function destroy(Comunicado $comunicado)
-    {
-        $comunicado->delete();
-        return redirect()->route('comunicados.index')->with('success', 'Comunicado excluído com sucesso!');
-    }
+    public function destroy($id)
+{
+    $comunicado = Comunicado::findOrFail(new ObjectId($id));
+    $comunicado->delete();
 
-    public function show(Comunicado $comunicado)
-    {
-        return view('comunicados.show', compact('comunicado'));
-    }
+    return redirect()->route('comunicados.index')->with('success', 'Comunicado excluído com sucesso!');
+}
+
+   public function show($id)
+{
+    $comunicado = Comunicado::findOrFail(new ObjectId($id));
+    return view('comunicados.show', compact('comunicado'));
+}
 
     public function busca(Request $request)
     {
